@@ -3,23 +3,23 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {togglePlayback} from '../actions';
 
-let buttonText = (playback) => {
-  return playback.isPlaying ? 'PAUSE' : 'PLAY';
+let buttonText = (isPlaying) => {
+  return isPlaying ? 'PAUSE' : 'PLAY';
 }
 
-const PlaybackControls = ({playback, onClick}) => (
+const PlaybackControls = ({isPlaying, onClick}) => (
   <button onClick={onClick} >
-    {buttonText(playback)}
+    {buttonText(isPlaying)}
   </button>
 );
 
 PlaybackControls.propTypes = {
-  playback: PropTypes.object.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  playback: state.playback
+  isPlaying: state.audioPlayer.isPlaying
 });
 
 const mapDispatchToProps = dispatch => ({

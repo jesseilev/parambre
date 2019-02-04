@@ -20,7 +20,7 @@ const initialState = {
   audioGraph: audioGraph
 }
 
-const playback = (state = initialState, action) => {
+const audioPlayer = (state = initialState, action) => {
   const setIsPlaying = newIsPlaying => ({
     ...state,
     isPlaying: !state.isPlaying,
@@ -37,4 +37,4 @@ const playback = (state = initialState, action) => {
   }
 };
 
-export default playback;
+export default audioPlayer;

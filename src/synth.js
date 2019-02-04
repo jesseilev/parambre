@@ -86,10 +86,10 @@ export const buildAudioNodes = (state) => {
 
   const attack = 0.1;
   const release = 2;
-  const { currentTime } = state.playback.audioGraph;
-  const targetGain = state.playback.isPlaying ? 0.2 : 0;
-  const rampDuration = state.playback.isPlaying ? attack : release;
-  let targetFinishTime = state.playback.mostRecentPlayPauseChange + rampDuration;
+  const { currentTime } = state.audioPlayer.audioGraph;
+  const targetGain = state.audioPlayer.isPlaying ? 0.2 : 0;
+  const rampDuration = state.audioPlayer.isPlaying ? attack : release;
+  let targetFinishTime = state.audioPlayer.mostRecentPlayPauseChange + rampDuration;
   const stillRamping = currentTime < targetFinishTime;
   const curveType = stillRamping ? 'linearRampToValueAtTime' : 'setValueAtTime';
   targetFinishTime = stillRamping ? targetFinishTime : 0;
@@ -125,5 +125,8 @@ export const buildAudioNodes = (state) => {
   };
 };
 
+const updateGraph = (state) => { 
+  state.audioPlayer.audioGraph.update(buildAudioNodes(state)) 
+};
 
-export default (state) => { state.playback.audioGraph.update(buildAudioNodes(state)) };
+export default updateGraph;

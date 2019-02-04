@@ -45,8 +45,8 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
-  updateGraph(state);
   console.log(state);
+  updateGraph(state);
 
 
   // audioGraph.update(currentAudioGraph(state, audioGraph));

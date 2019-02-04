@@ -3,8 +3,6 @@ import {Rnd} from 'react-rnd';
 import Footer from './Footer';
 import AddTodo from '../containers/AddTodo';
 import VisibleTodoList from '../containers/VisibleTodoList';
-import PlaybackControls from './PlaybackControls';
-import Slider from './Slider';
 import ControlPad from '../containers/ControlPad';
 
 
@@ -12,11 +10,12 @@ import ControlPad from '../containers/ControlPad';
 const App = () => (
   <div>
     
-    <PlaybackControls />
+    
     <ControlPad />
     
     
     {/* 
+    <PlaybackControls />
     <AddTodo />
     <VisibleTodoList />
     <Footer />
