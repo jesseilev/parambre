@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Rnd} from 'react-rnd';
 import ResizableRect from 'react-resizable-rotatable-draggable';
-import {waveChange, setPlayback} from '../actions';
+import {withSize} from 'react-sizeme';
+import {dragDelta, setPlayback} from '../actions';
 
 
 const style = {
@@ -14,11 +15,7 @@ const style = {
   background: "#f0f0f0"
 };
 
-const onDrag = (arg1, arg2) => {
-  console.log("drag!");
-  console.log(arg1);
-  console.log(arg2);
-}
+const handleSize = { width: 20, height: 20 }
 
 const ControlBox = (props) => (
   <div
@@ -29,11 +26,11 @@ const ControlBox = (props) => (
     }}
   >
     <ResizableRect
-      left={100}
-      top={100}
-      width={100}
-      height={100}
-      onDrag={onDrag}
+      left={props.xPercent * props.size.width - (0.5 * handleSize.width)}
+      top={props.yPercent * props.size.height - (0.5 * handleSize.height)}
+      width={20}
+      height={20}
+      onDrag={props.onDrag(props.size)}
       onDragStart={props.onDragStart}
       onDragEnd={props.onDragStop}
     >
@@ -69,10 +66,10 @@ const ControlBox = (props) => (
 );
 
 ControlBox.propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
+  xPercent: PropTypes.number.isRequired,
+  yPercent: PropTypes.number.isRequired,
+  // width: PropTypes.number.isRequired,
+  // height: PropTypes.number.isRequired,
   onDrag: PropTypes.func.isRequired,
   onResize: PropTypes.func.isRequired
 };
@@ -113,20 +110,20 @@ const boxToWave = (box) => ({
   amp: mapBetweenRanges(windowHeightRange, ranges.amp, box.height)
 })
 
-const mapStateToProps = state => (
-  waveToBox(state.wave1)
-);
+const mapStateToProps = state => ({
+  xPercent: state.wave1.phase,
+  yPercent: state.wave1.offset
+});
 
 const mapDispatchToProps = dispatch => ({
-  onDrag: (event, dragData) => {
-    // const box = {
-    //   x: dragData.x,
-    //   y: dragData.y,
-    //   width: dragData.node.clientWidth,
-    //   height: dragData.node.clientHeight
-    // };
-    return dispatch(waveChange(boxToWave({})));
-  },
+  onDrag: (containerSize) => (
+    (deltaX, deltaY) => (
+      dispatch(dragDelta(
+        deltaX / containerSize.width, 
+        deltaY / containerSize.height
+      ))
+    )
+  ),
   onResize: (event, direction, refToElement, resizeDelta, position) => {
     const box = {
       x: position.x,
@@ -134,7 +131,7 @@ const mapDispatchToProps = dispatch => ({
       width: refToElement.clientWidth,
       height: refToElement.clientHeight
     }
-    return dispatch(waveChange(boxToWave(box))); 
+    return dispatch({type: 'noop'}); 
   },
   onDragStart: () => {
     return dispatch(setPlayback(true));
@@ -144,4 +141,5 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ControlBox);
+const ControlBoxWithSize = withSize({ monitorHeight: true })(ControlBox);
+export default connect(mapStateToProps, mapDispatchToProps)(ControlBoxWithSize);

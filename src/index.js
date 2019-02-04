@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { ReduxEmitter } from 'kuker-emitters';
 import * as R from 'ramda';
 
 
@@ -23,7 +24,8 @@ import {rootReducer, initialState} from './reducers';
 
 // import {updateAudio, currentAudioGraph} from './reducers/audioGraphPlayer';
 
-const store = createStore(rootReducer, initialState);
+const middleware = ReduxEmitter();
+const store = createStore(rootReducer, applyMiddleware(middleware));
 
 render(
   <Provider store={store}>

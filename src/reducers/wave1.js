@@ -7,8 +7,12 @@ const defaultWave = {
 
 export const wave1 = (state = defaultWave, action) => {
   switch(action.type) {
-    case 'WAVE_CHANGE':
-      return action.newWave;
+    case 'DRAG_DELTA':
+      return {
+        ...state,
+        phase: state.phase + action.delta.x,
+        offset: state.offset + action.delta.y
+      }
     default:
       return state;
   }

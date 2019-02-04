@@ -29,6 +29,11 @@ export const waveChange = (newWave) => ({
   newWave
 })
 
+export const dragDelta = (deltaX, deltaY) => ({
+  type: 'DRAG_DELTA',
+  delta: { x: deltaX, y: deltaY } 
+})
+
 export const setPlayback = (newIsPlaying) => ({
   type: 'SET_PLAYBACK',
   newIsPlaying
