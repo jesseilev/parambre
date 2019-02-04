@@ -25,9 +25,10 @@ const SliderFor2Params = (props) => (
       top={props.yPercent * props.parentSize.height - (0.5 * handleSize.height)}
       width={20}
       height={20}
-      onDrag={props.onDrag(props.parentSize, props.xParamKey, props.yParamKey)}
+      onDrag={props.onDrag(props.parentSize, props.lensPaths)}
       onDragStart={props.onDragStart}
       onDragEnd={props.onDragStop}
+      style={{'background': props.color}}
     >
     </ResizableRect>
 );
@@ -73,22 +74,19 @@ const pixelsPerPeriod = 50;
 // })
 
 const mapStateToProps = (state, ownProps) => ({
-  xPercent: state.wave1[ownProps.xParamKey],
-  yPercent: state.wave1[ownProps.yParamKey]
+  xPercent: R.view(R.lensPath(ownProps.lensPaths.x), state.timbreParams),
+  yPercent: R.view(R.lensPath(ownProps.lensPaths.y), state.timbreParams),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onDrag: (containerSize, xParamKey, yParamKey) => (
+  onDrag: (containerSize, lensPaths) => (
     (deltaX, deltaY) => (
       dispatch(dragDelta({
         delta: { 
           x: deltaX / containerSize.width, 
           y: deltaY / containerSize.height
         },
-        lenses: { 
-          x: R.lensProp(xParamKey),
-          y: R.lensProp(yParamKey)
-        }
+        lensPaths: lensPaths
       }))
     )
   ),

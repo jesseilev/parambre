@@ -45,7 +45,7 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
-  console.log(state.wave1);
+  // console.log(state.timbreParams.curve1);
   updateGraph(state);
 
 

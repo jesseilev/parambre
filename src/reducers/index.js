@@ -2,15 +2,13 @@ import { combineReducers } from 'redux'
 import todos from './todos'
 import visibilityFilter from './visibilityFilter'
 import audioPlayer from './audioPlayer'
-import {wave1} from './wave1'
-// import audioGraphPlayer from './audioGraphPlayer'
+import {timbreParams} from './timbreParams'
 
 export const initialState = {
 
 };
 
 export const rootReducer = combineReducers({
-  // audioGraphPlayer,
-  wave1,
+  timbreParams,
   audioPlayer,
 });
