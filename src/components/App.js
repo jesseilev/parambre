@@ -5,7 +5,7 @@ import AddTodo from '../containers/AddTodo';
 import VisibleTodoList from '../containers/VisibleTodoList';
 import PlaybackControls from './PlaybackControls';
 import Slider from './Slider';
-import ControlBox from './ControlBox';
+import ControlPad from '../containers/ControlPad';
 
 
 
@@ -13,7 +13,7 @@ const App = () => (
   <div>
     
     <PlaybackControls />
-    <ControlBox />
+    <ControlPad />
     
     
     {/* 

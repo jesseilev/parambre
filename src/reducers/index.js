@@ -13,6 +13,4 @@ export const rootReducer = combineReducers({
   // audioGraphPlayer,
   wave1,
   playback,
-  todos,
-  visibilityFilter
 });
