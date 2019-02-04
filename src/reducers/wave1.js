@@ -1,18 +1,21 @@
+import * as R from 'ramda';
+
+
 const defaultWave = {
   phase: 0,
   offset: 0.5,
-  freq: 1,
+  freq: 0.5,
   amp: 0.5
 };
 
 export const wave1 = (state = defaultWave, action) => {
   switch(action.type) {
     case 'DRAG_DELTA':
-      return {
-        ...state,
-        phase: state.phase + action.delta.x,
-        offset: state.offset + action.delta.y
-      }
+      const { lenses, delta } = action.payload;
+      const addBy = R.curry(R.add);
+      const updateX = R.curry(R.over(lenses.x, addBy(delta.x)));
+      const updateY = R.curry(R.over(lenses.y, addBy(delta.y)));
+      return R.compose(updateX, updateY)(state);
     default:
       return state;
   }

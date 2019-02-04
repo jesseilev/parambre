@@ -20,6 +20,13 @@ const ControlPad = (props) => (
     yParamKey={'offset'}
     >
     </SliderFor2Params>
+
+    <SliderFor2Params 
+    parentSize={props.size}
+    xParamKey={'freq'}
+    yParamKey={'amp'}
+    >
+    </SliderFor2Params>
   </div>
 );
 

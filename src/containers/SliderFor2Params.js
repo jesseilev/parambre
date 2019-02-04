@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Rnd} from 'react-rnd';
 import ResizableRect from 'react-resizable-rotatable-draggable';
 import {withSize} from 'react-sizeme';
+import * as R from 'ramda';
 
 import {dragDelta, setPlayback} from '../actions';
 
@@ -24,7 +25,7 @@ const SliderFor2Params = (props) => (
       top={props.yPercent * props.parentSize.height - (0.5 * handleSize.height)}
       width={20}
       height={20}
-      onDrag={props.onDrag(props.parentSize)}
+      onDrag={props.onDrag(props.parentSize, props.xParamKey, props.yParamKey)}
       onDragStart={props.onDragStart}
       onDragEnd={props.onDragStop}
     >
@@ -76,13 +77,19 @@ const mapStateToProps = (state, ownProps) => ({
   yPercent: state.wave1[ownProps.yParamKey]
 });
 
-const mapDispatchToProps = dispatch => ({
-  onDrag: (containerSize) => (
+const mapDispatchToProps = (dispatch) => ({
+  onDrag: (containerSize, xParamKey, yParamKey) => (
     (deltaX, deltaY) => (
-      dispatch(dragDelta(
-        deltaX / containerSize.width, 
-        deltaY / containerSize.height
-      ))
+      dispatch(dragDelta({
+        delta: { 
+          x: deltaX / containerSize.width, 
+          y: deltaY / containerSize.height
+        },
+        lenses: { 
+          x: R.lensProp(xParamKey),
+          y: R.lensProp(yParamKey)
+        }
+      }))
     )
   ),
   onDragStart: () => {

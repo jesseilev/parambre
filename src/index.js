@@ -45,7 +45,7 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
-  console.log(state);
+  console.log(state.wave1);
   updateGraph(state);
 
 
