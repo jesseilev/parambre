@@ -23,7 +23,7 @@ const initialState = {
 const audioPlayer = (state = initialState, action) => {
   const setIsPlaying = newIsPlaying => ({
     ...state,
-    isPlaying: !state.isPlaying,
+    isPlaying: newIsPlaying,
     mostRecentPlayPauseChange: state.audioGraph.currentTime
   });
 
