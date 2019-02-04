@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {togglePlayback} from '../actions';
 
 let buttonText = (playback) => {
-  return playback ? 'PAUSE' : 'PLAY';
+  return playback.isPlaying ? 'PAUSE' : 'PLAY';
 }
 
 const PlaybackControls = ({playback, onClick}) => (
@@ -14,7 +14,7 @@ const PlaybackControls = ({playback, onClick}) => (
 );
 
 PlaybackControls.propTypes = {
-  playback: PropTypes.bool.isRequired,
+  playback: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired
 };
 

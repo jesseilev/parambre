@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Rnd} from 'react-rnd';
-import {waveChange} from '../actions';
+import ResizableRect from 'react-resizable-rotatable-draggable';
+import {waveChange, setPlayback} from '../actions';
 
 
 const style = {
@@ -19,7 +20,7 @@ const onDrag = (arg1, arg2) => {
   console.log(arg2);
 }
 
-const ControlBox = ({x, y, width, height, onDrag, onResize}) => (
+const ControlBox = (props) => (
   <div
     style={{
       width: '600px',
@@ -27,6 +28,18 @@ const ControlBox = ({x, y, width, height, onDrag, onResize}) => (
       background: '#777'
     }}
   >
+    <ResizableRect
+      left={100}
+      top={100}
+      width={100}
+      height={100}
+      onDrag={onDrag}
+      onDragStart={props.onDragStart}
+      onDragEnd={props.onDragStop}
+    >
+    </ResizableRect>
+
+    {/*
     <Rnd
       style={style}
       default={{
@@ -36,22 +49,22 @@ const ControlBox = ({x, y, width, height, onDrag, onResize}) => (
         height: 200
       }}
       position={{
-        x: x,
-        y: y
+        x: props.x,
+        y: props.y
       }}
 
-      /*
-      size={{
-        width: width,
-        height: height
-      }}
-      */
+      // size={{width: props.width, height: props.height}}
 
-      onDrag={onDrag}
-      onResize={onResize}
+      onDrag={props.onDrag}
+      onResize={props.onResize}
+      onResizeStop={ console.log("stop!") }
+      onResizeStart={ console.log("start!") }
     >
       Rnd
     </Rnd>
+    
+    */}
+
   </div>
 );
 
@@ -106,13 +119,13 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => ({
   onDrag: (event, dragData) => {
-    const box = {
-      x: dragData.x,
-      y: dragData.y,
-      width: dragData.node.clientWidth,
-      height: dragData.node.clientHeight
-    };
-    return dispatch(waveChange(boxToWave(box)));
+    // const box = {
+    //   x: dragData.x,
+    //   y: dragData.y,
+    //   width: dragData.node.clientWidth,
+    //   height: dragData.node.clientHeight
+    // };
+    return dispatch(waveChange(boxToWave({})));
   },
   onResize: (event, direction, refToElement, resizeDelta, position) => {
     const box = {
@@ -122,6 +135,12 @@ const mapDispatchToProps = dispatch => ({
       height: refToElement.clientHeight
     }
     return dispatch(waveChange(boxToWave(box))); 
+  },
+  onDragStart: () => {
+    return dispatch(setPlayback(true));
+  },
+  onDragStop: () => {
+    return dispatch(setPlayback(false));
   }
 });
 

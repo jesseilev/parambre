@@ -29,6 +29,19 @@ export const waveChange = (newWave) => ({
   newWave
 })
 
+export const setPlayback = (newIsPlaying) => ({
+  type: 'SET_PLAYBACK',
+  newIsPlaying
+})
+
+export const dragStart = () => ({
+  type: 'DRAG_START'
+})
+
+export const dragStop = () => ({
+  type: 'DRAG_STOP'
+})
+
 export const boxDrag = dragData => ({
   type: 'BOX_DRAG',
   dragData
