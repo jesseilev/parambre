@@ -4,9 +4,12 @@ import createVirtualAudioGraph, {
   createWorkletNode,
   delay,
   gain,
+  biquadFilter,
+  bufferSource,
   oscillator,
   stereoPanner,
 } from 'virtual-audio-graph';
+import audioContext from './audioContext';
 
 
 const sine = ({amp, freq, offset, phase}, x) => (
@@ -15,7 +18,9 @@ const sine = ({amp, freq, offset, phase}, x) => (
 
 
 
+
 // CUSTOM GRAPH SECTIONS
+
 
 const oscWithGain = createNode(({
   gain: gainValue,
@@ -45,8 +50,8 @@ const customSynth = createNode(({
   rootFrequency,
   toneCount,
   overtoneAmp,
-  overtonePulseFreq,
-  overtonePulseAmp,
+  overtoneModulationFreq,
+  overtoneModulationAmp,
   ...rest
 }) => {
   const reduceFunc = (accumulatedOscs, i) => {
@@ -56,8 +61,8 @@ const customSynth = createNode(({
       { 
         frequency: freq, 
         gain: amp,
-        pulseFrequency: overtonePulseFreq(i),
-        pulseAmplitiude: overtonePulseAmp(i) * amp,
+        pulseFrequency: overtoneModulationFreq(i),
+        pulseAmplitiude: overtoneModulationAmp(i) * amp,
         ...rest 
       }
     );
@@ -67,6 +72,16 @@ const customSynth = createNode(({
   return R.range(1, toneCount + 1).filter(filterer).reduce(reduceFunc, {});
 });
 
+
+// noise buffer
+const sampleRate = audioContext.sampleRate;
+const bufferDuration = 2;
+const bufferSize = bufferDuration * sampleRate;
+const buffer = audioContext.createBuffer(bufferDuration, bufferSize, sampleRate);
+let data = buffer.getChannelData(0);
+for (let i = 0; i < bufferSize; i++) {
+  data[i] = Math.random() * 2 - 1;
+}
 
 // BUILD THE AUDIO GRAPH BASED ON CURRENT STATE
 
@@ -90,8 +105,8 @@ export const buildAudioNodes = (state) => {
     rootFrequency: freq,
     toneCount: 25,
     overtoneAmp: i => sine(curve1, i),
-    overtonePulseFreq: (i) => sine(curve2, i) * 12,
-    overtonePulseAmp: (i) => sine(curve3, i)
+    overtoneModulationFreq: (i) => sine(curve2, i) * 8,
+    overtoneModulationAmp: (i) => sine(curve3, i)
   })
   return {
     0: gain('output', {
@@ -102,10 +117,29 @@ export const buildAudioNodes = (state) => {
       //   ['linearRampToValueAtTime', 0, currentTime + attack + release],
       // ]
     }),
-    1: genCustom(rootFreq),
-    // 2: genCustom(rootFreq * 9 / 3),
+
+    1: genCustom(rootFreq * 8 / 9),
+    2: genCustom(rootFreq * 8 / 3),
     3: genCustom(rootFreq * 12 / 5),
     4: genCustom(rootFreq * 9 / 5)
+
+    // 1: biquadFilter(0, {
+    //   type: 'lowpass',
+    //   frequency: curve1.offset * 1000,
+    //   q: 10000000000000,
+    // }),
+
+    // 2: biquadFilter(1, {
+    //   type: 'highpass',
+    //   frequency: curve1.phase * 1000,
+    //   q: 1000000000000,
+    // }),
+
+    // 3: bufferSource(2, {
+    //   buffer: buffer,
+    //   loop: true
+    // })
+
     // 1: oscWithFluctuatingGain(0, {
     //   frequency: rootFreq,
     //   gain: 0.6,

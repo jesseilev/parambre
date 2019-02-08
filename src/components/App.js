@@ -8,7 +8,8 @@ import ControlPad from '../containers/ControlPad';
 
 
 const App = () => (
-  <div>
+  <div
+  >
     
     
     <ControlPad />

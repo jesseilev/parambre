@@ -9,9 +9,9 @@ import SliderFor2Params from './SliderFor2Params';
 const ControlPad = (props) => (
   <div
   style={{
-    width: '600px',
-    height: '400px',
-    background: '#777'
+    width: '100%',
+    height: '700px',
+    background: '#333'
   }}
   >
     <SliderFor2Params 
