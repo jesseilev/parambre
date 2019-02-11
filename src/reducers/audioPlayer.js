@@ -36,8 +36,6 @@ const audioPlayer = (state = initialState, action) => {
     case 'TOGGLE_PLAYBACK':
       return setIsPlaying(!state.isPlaying);
     case 'SET_PLAYBACK':
-      // debugger;
-      console.log(action);
       return setIsPlaying(action.newIsPlaying);
     default:
       return state;

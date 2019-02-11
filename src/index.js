@@ -50,17 +50,17 @@ render(
 
 
 
-store.subscribe(() => {
-  const state = store.getState();
-  console.log(state);
-  // console.log(state.timbreParams.curve1);
-  // updateGraph(state);
+// store.subscribe(() => {
+//   const state = store.getState();
+//   console.log(state);
+//   // console.log(state.timbreParams.curve1);
+//   // updateGraph(state);
 
-  // audioGraph.update(currentAudioGraph(state, audioGraph));
-  // virtualAudioGraph.update(
-  //   state.playback ? currentGraph(state) : {}
-  // );
-});
+//   // audioGraph.update(currentAudioGraph(state, audioGraph));
+//   // virtualAudioGraph.update(
+//   //   state.playback ? currentGraph(state) : {}
+//   // );
+// });
 
 
 // window.requestAnimationFrame((timestamp) => {

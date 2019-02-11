@@ -88,11 +88,6 @@ for (let i = 0; i < bufferSize; i++) {
 
 export const buildAudioNodes = (state) => {
 
-  console.log(state.audioPlayer.isPlaying);
-  if ( ! state.audioPlayer.isPlaying) {
-    // debugger;
-  }
-
   const attack = 0.1;
   const release = 2;
   const { currentTime } = state.audioPlayer.audioGraph || 0;
@@ -106,9 +101,6 @@ export const buildAudioNodes = (state) => {
   const rootFreq = 180;
   
   const {curve1, curve2, curve3} = state.timbreParams;
-
-
-  console.log([ curveType, targetGain, targetFinishTime ]);
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
@@ -163,7 +155,6 @@ export const buildAudioNodes = (state) => {
 };
 
 const updateGraph = (state) => { 
-  // debugger;
   const newNodes = buildAudioNodes(state);
   state.audioPlayer.audioGraph.update(newNodes); 
 };
