@@ -111,10 +111,10 @@ export const buildAudioNodes = (state) => {
   })
   return {
     1000: analyser('output', {
-      fftSize: 1024
+      fftSize: 256
     }),
 
-    0: gain('output', {
+    0: gain(1000, {
         gain: [ curveType, targetGain, targetFinishTime ]
       // gain: [ 
       //   ['setValueAtTime', 0, currentTime],

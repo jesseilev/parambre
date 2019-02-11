@@ -1,15 +1,11 @@
 
-const initialState = {
-  frequencyData: new Float32Array()
-};
+const initialState = new Uint8Array();
 
 export const frequencyData = (state = initialState, action) => {
   switch (action.type) {
     case 'FFT_UPDATE':
-      return {
-        ...state,
-        frequencyData: action.frequencyData
-      };
+      // debugger;
+      return action.frequencyData;
     default:
       return state;
   }

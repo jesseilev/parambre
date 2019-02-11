@@ -63,13 +63,20 @@ render(
 // });
 
 
-// window.requestAnimationFrame((timestamp) => {
-//   // extract fft data
-//   const state = store.getState();
-//   const analyzerNode = state.audioPlayer.audioGraph.getAudioNodeById(1000);
-//   let dataArray = new Float32Array(analyzerNode.frequencyBinCount);
-//   analyzerNode.getFloatFrequencyData(dataArray);
+function updateFFT(timestamp) {
+  requestAnimationFrame(updateFFT);
 
-//   // dispatch to the store
-//   store.dispatch(fftUpdate(dataArray))
-// });
+  // console.log(timestamp);
+  // extract fft data
+  const state = store.getState();
+  const analyzerNode = state.audioPlayer.audioGraph.getAudioNodeById(1000);
+  if (analyzerNode !== undefined) {
+    let dataArray = new Uint8Array(analyzerNode.frequencyBinCount);
+    analyzerNode.getByteFrequencyData(dataArray);
+
+    // dispatch to the store  
+    store.dispatch(fftUpdate(dataArray))
+  }
+};
+
+updateFFT();
