@@ -47,6 +47,15 @@ export const dragStop = () => ({
   type: 'DRAG_STOP'
 })
 
+export const graphUpdate = () => ({
+  type: 'GRAPH_UPDATE'
+})
+
+export const fftUpdate = (frequencyData) => ({
+  type: 'FFT_UPDATE',
+  frequencyData
+})
+
 export const boxDrag = dragData => ({
   type: 'BOX_DRAG',
   dragData

@@ -6,7 +6,9 @@ import createVirtualAudioGraph, {
   oscillator,
   stereoPanner,
 } from 'virtual-audio-graph';
+import { Cmd, loop } from 'redux-loop'; 
 import audioContext from '../audioContext';
+import {graphUpdate} from '../actions';
 
 
 const audioGraph = createVirtualAudioGraph({
@@ -21,16 +23,21 @@ const initialState = {
 }
 
 const audioPlayer = (state = initialState, action) => {
-  const setIsPlaying = newIsPlaying => ({
-    ...state,
-    isPlaying: newIsPlaying,
-    mostRecentPlayPauseChange: state.audioGraph.currentTime
-  });
+  const setIsPlaying = (newIsPlaying) => {
+    const newState = {
+      ...state,
+      isPlaying: newIsPlaying,
+      mostRecentPlayPauseChange: state.audioGraph.currentTime
+    };
+    return loop(newState, Cmd.action(graphUpdate()));
+  };
 
   switch(action.type) {
     case 'TOGGLE_PLAYBACK':
       return setIsPlaying(!state.isPlaying);
     case 'SET_PLAYBACK':
+      // debugger;
+      console.log(action);
       return setIsPlaying(action.newIsPlaying);
     default:
       return state;

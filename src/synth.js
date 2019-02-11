@@ -8,6 +8,7 @@ import createVirtualAudioGraph, {
   bufferSource,
   oscillator,
   stereoPanner,
+  analyser
 } from 'virtual-audio-graph';
 import audioContext from './audioContext';
 
@@ -87,19 +88,27 @@ for (let i = 0; i < bufferSize; i++) {
 
 export const buildAudioNodes = (state) => {
 
+  console.log(state.audioPlayer.isPlaying);
+  if ( ! state.audioPlayer.isPlaying) {
+    // debugger;
+  }
+
   const attack = 0.1;
   const release = 2;
-  const { currentTime } = state.audioPlayer.audioGraph;
+  const { currentTime } = state.audioPlayer.audioGraph || 0;
   const targetGain = state.audioPlayer.isPlaying ? 0.2 : 0;
   const rampDuration = state.audioPlayer.isPlaying ? attack : release;
   let targetFinishTime = state.audioPlayer.mostRecentPlayPauseChange + rampDuration;
   const stillRamping = currentTime < targetFinishTime;
   const curveType = stillRamping ? 'linearRampToValueAtTime' : 'setValueAtTime';
-  targetFinishTime = stillRamping ? targetFinishTime : 0;
+  targetFinishTime = stillRamping ? targetFinishTime : currentTime;
 
   const rootFreq = 180;
   
   const {curve1, curve2, curve3} = state.timbreParams;
+
+
+  console.log([ curveType, targetGain, targetFinishTime ]);
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
@@ -109,6 +118,10 @@ export const buildAudioNodes = (state) => {
     overtoneModulationAmp: (i) => sine(curve3, i)
   })
   return {
+    1000: analyser('output', {
+      fftSize: 1024
+    }),
+
     0: gain('output', {
         gain: [ curveType, targetGain, targetFinishTime ]
       // gain: [ 
@@ -150,7 +163,9 @@ export const buildAudioNodes = (state) => {
 };
 
 const updateGraph = (state) => { 
-  state.audioPlayer.audioGraph.update(buildAudioNodes(state)) 
+  // debugger;
+  const newNodes = buildAudioNodes(state);
+  state.audioPlayer.audioGraph.update(newNodes); 
 };
 
 export default updateGraph;

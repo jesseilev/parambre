@@ -1,4 +1,7 @@
 import * as R from 'ramda';
+import {Cmd, loop} from 'redux-loop';
+// import updateGraph from '../synth.js';
+import {graphUpdate} from '../actions';
 
 
 const initialState = {
@@ -22,6 +25,7 @@ const initialState = {
   }
 };
 
+
 export const timbreParams = (state = initialState, action) => {
   switch(action.type) {
     case 'DRAG_DELTA':
@@ -31,7 +35,13 @@ export const timbreParams = (state = initialState, action) => {
       const yLens = R.lensPath(lensPaths.y);
       const updateX = R.curry(R.over(xLens, addBy(delta.x)));
       const updateY = R.curry(R.over(yLens, addBy(delta.y)));
-      return R.compose(updateX, updateY)(state);
+      const newState = R.compose(updateX, updateY)(state);
+      // debugger;
+      return loop(
+        newState, 
+        Cmd.action(graphUpdate())
+    );
+      // return newState;
     default:
       return state;
   }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { ReduxEmitter } from 'kuker-emitters';
+import { install } from 'redux-loop';
 import * as R from 'ramda';
 
 
@@ -17,6 +18,7 @@ import createVirtualAudioGraph, {
 import audioContext from './audioContext';
 
 import updateGraph from './synth';
+import {fftUpdate} from './actions';
 
 
 import App from './components/App';
@@ -24,8 +26,13 @@ import {rootReducer, initialState} from './reducers';
 
 // import {updateAudio, currentAudioGraph} from './reducers/audioGraphPlayer';
 
-const middleware = ReduxEmitter();
-const store = createStore(rootReducer, applyMiddleware(middleware));
+
+const enhancer = compose(
+  applyMiddleware(ReduxEmitter()),
+  install()
+)
+
+const store = createStore(rootReducer, initialState, enhancer);
 
 render(
   <Provider store={store}>
@@ -45,12 +52,24 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
+  console.log(state);
   // console.log(state.timbreParams.curve1);
-  updateGraph(state);
-
+  // updateGraph(state);
 
   // audioGraph.update(currentAudioGraph(state, audioGraph));
   // virtualAudioGraph.update(
   //   state.playback ? currentGraph(state) : {}
   // );
 });
+
+
+// window.requestAnimationFrame((timestamp) => {
+//   // extract fft data
+//   const state = store.getState();
+//   const analyzerNode = state.audioPlayer.audioGraph.getAudioNodeById(1000);
+//   let dataArray = new Float32Array(analyzerNode.frequencyBinCount);
+//   analyzerNode.getFloatFrequencyData(dataArray);
+
+//   // dispatch to the store
+//   store.dispatch(fftUpdate(dataArray))
+// });
