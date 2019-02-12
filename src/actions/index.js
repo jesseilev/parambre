@@ -34,6 +34,11 @@ export const dragDelta = (payload) => ({
   payload
 })
 
+export const resizeDelta = (payload) => ({
+  type: 'RESIZE_DELTA',
+  payload
+})
+
 export const setPlayback = (newIsPlaying) => ({
   type: 'SET_PLAYBACK',
   newIsPlaying

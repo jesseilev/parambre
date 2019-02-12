@@ -21,17 +21,9 @@ const ControlPad = (props) => (
     parentSize={props.size}
     lensPaths={{
       x: ['curve1', 'phase'],
-      y: ['curve1', 'offset']
-    }}
-    color={'#8092412'}
-    >
-    </SliderFor2Params>
-
-    <SliderFor2Params 
-    parentSize={props.size}
-    lensPaths={{
-      x: ['curve1', 'freq'],
-      y: ['curve1', 'amp']
+      y: ['curve1', 'offset'],
+      width: ['curve1', 'freq'],
+      height: ['curve1', 'amp']
     }}
     color={'#509308'}
     >
@@ -41,17 +33,9 @@ const ControlPad = (props) => (
     parentSize={props.size}
     lensPaths={{
       x: ['curve2', 'phase'],
-      y: ['curve2', 'offset']
-    }}
-    color={'#923842'}
-    >
-    </SliderFor2Params>
-
-    <SliderFor2Params 
-    parentSize={props.size}
-    lensPaths={{
-      x: ['curve2', 'freq'],
-      y: ['curve2', 'amp']
+      y: ['curve2', 'offset'],
+      width: ['curve2', 'freq'],
+      height: ['curve2', 'amp']
     }}
     color={'#309273'}
     >
@@ -61,18 +45,11 @@ const ControlPad = (props) => (
     parentSize={props.size}
     lensPaths={{
       x: ['curve3', 'phase'],
-      y: ['curve3', 'offset']
+      y: ['curve3', 'offset'],
+      width: ['curve3', 'freq'],
+      height: ['curve3', 'amp']
     }}
-    color={'#580230'}
-    >
-    </SliderFor2Params>
-
-    <SliderFor2Params 
-    parentSize={props.size}
-    lensPaths={{
-      x: ['curve3', 'freq'],
-      y: ['curve3', 'amp']
-    }}
+    
     color={'#1502703'}
     >
     </SliderFor2Params>

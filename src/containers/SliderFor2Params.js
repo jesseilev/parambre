@@ -6,7 +6,7 @@ import ResizableRect from 'react-resizable-rotatable-draggable';
 import {withSize} from 'react-sizeme';
 import * as R from 'ramda';
 
-import {dragDelta, setPlayback} from '../actions';
+import {dragDelta, resizeDelta, setPlayback} from '../actions';
 
 
 const style = {
@@ -19,19 +19,35 @@ const style = {
 
 const handleSize = { width: 20, height: 20 }
 
-const SliderFor2Params = (props) => (
+const SliderFor2Params = (props) => {
+  const { 
+    xPercent, yPercent, widthPercent, heightPercent, parentSize,
+    lensPaths, onDrag, onResize, onDragStart, onDragStop 
+  } = props;
+
+  const x = xPercent * parentSize.width;
+  const y = yPercent * parentSize.height;
+  const width = widthPercent * parentSize.width;
+  const height = heightPercent * parentSize.height;
+
+  return (
     <ResizableRect
-      left={props.xPercent * props.parentSize.width - (0.5 * handleSize.width)}
-      top={props.yPercent * props.parentSize.height - (0.5 * handleSize.height)}
-      width={20}
-      height={20}
-      onDrag={props.onDrag(props.parentSize, props.lensPaths)}
-      onDragStart={props.onDragStart}
-      onDragEnd={props.onDragStop}
+      left={x - width * 0.5}
+      top={y - height * 0.5}
+      width={width}
+      height={height}
+      zoomable={'nw, ne, sw, se'}
+      onDrag={onDrag(parentSize, lensPaths)}
+      onResize={onResize(parentSize, widthPercent, heightPercent, lensPaths)}
+      onDragStart={onDragStart}
+      onDragEnd={onDragStop}
+      onResizeStart={onDragStart}
+      onResizeEnd={onDragStop}
       style={{'background': props.color}}
     >
     </ResizableRect>
-);
+  );
+};
 
 SliderFor2Params.propTypes = {
   xPercent: PropTypes.number.isRequired,
@@ -76,6 +92,8 @@ const pixelsPerPeriod = 50;
 const mapStateToProps = (state, ownProps) => ({
   xPercent: R.view(R.lensPath(ownProps.lensPaths.x), state.timbreParams),
   yPercent: R.view(R.lensPath(ownProps.lensPaths.y), state.timbreParams),
+  widthPercent: R.view(R.lensPath(ownProps.lensPaths.width), state.timbreParams),
+  heightPercent: R.view(R.lensPath(ownProps.lensPaths.height), state.timbreParams)
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -89,6 +107,19 @@ const mapDispatchToProps = (dispatch) => ({
         lensPaths: lensPaths
       }))
     )
+  ),
+  onResize: (containerSize, oldWidthPercent, oldHeightPercent, lensPaths) => (
+    (box, isShiftKey, handleType) => {
+      const newWidthPercent = box.width / containerSize.width;
+      const newHeightPercent = box.height / containerSize.height;
+      return dispatch(resizeDelta({
+        delta: {
+          width: newWidthPercent - oldWidthPercent,
+          height: newHeightPercent - oldHeightPercent
+        },
+        lensPaths: lensPaths
+      }));
+    }
   ),
   onDragStart: () => {
     return dispatch(setPlayback(true));
