@@ -5,9 +5,8 @@ import {timbreParams} from './timbreParams'
 import {frequencyData} from './frequencyData'
 import updateGaph from '../synth'
 
-export const initialState = {
-  
-};
+
+export const initialState = {};
 
 export const rootReducer = (state, action) => {
   switch(action.type) {

@@ -2,32 +2,56 @@ import * as R from 'ramda';
 import {Cmd, loop} from 'redux-loop';
 // import updateGraph from '../synth.js';
 import {graphUpdate} from '../actions';
+import {range, mapBetweenRanges} from '../utils/range';
 
 
-const initialState = {
+
+export const settings = {
   curve1: {
-    phase: 0.3,
-    offset: 0.5,
-    period: 0.5,
-    amp: 0.5
+    ranges: {
+      phase: range(0, 1),
+      offset: range(0, 1),
+      period: range(0.1, 1),
+      amp: range(0, 1)
+    }
   },
   curve2: {
-    phase: 0.7,
-    offset: 0.25,
-    period: 0.15,
-    amp: 0.85
+    ranges: {
+      phase: range(0, 1),
+      offset: range(0, 1),
+      period: range(0.1, 1),
+      amp: range(0, 1)
+    }
   },
   curve3: {
-    phase: 0.4,
-    offset: 0.95,
-    period: 0.55,
-    amp: 0.8
+    ranges: {
+      phase: range(0, 1),
+      offset: range(0, 1),
+      period: range(0.1, 1),
+      amp: range(0, 1)
+    }
   }
+};
+
+const genRandomCurve = (ranges) => {
+  const mapFrom01To = (r, n) => mapBetweenRanges(range(0, 1), r, n);
+  return {
+    phase: mapFrom01To(ranges.phase, Math.random()),
+    offset: mapFrom01To(ranges.offset, Math.random()),
+    period: mapFrom01To(ranges.period, Math.random()),
+    amp: mapFrom01To(ranges.amp, Math.random())
+  };
+};
+
+const initialState = {
+  curve1: genRandomCurve(settings.curve1.ranges),
+  curve2: genRandomCurve(settings.curve2.ranges),
+  curve3: genRandomCurve(settings.curve3.ranges)
 };
 
 
 export const timbreParams = (state = initialState, action) => {
-
+  // debugger;
   switch(action.type) {
     case 'BOX_ADJUSTMENT':
       const updateParam = ({value, lensPath}) => (

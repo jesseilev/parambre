@@ -6,6 +6,9 @@ import AdjustableBoxFor4Params from './AdjustableBoxFor4Params';
 import Visualizer from '../containers/Visualizer';
 import {range} from '../utils/range';
 
+// TODO inject settings into state instead of doing thing
+import {settings} from '../reducers/timbreParams';
+
 
 const ControlPad = (props) => (
   <div
@@ -49,32 +52,7 @@ const ControlPad = (props) => (
   </div>
 );
 
-const settings = {
-  curve1: {
-    ranges: {
-      phase: range(0, 1),
-      offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
-    }
-  },
-  curve2: {
-    ranges: {
-      phase: range(0, 1),
-      offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
-    }
-  },
-  curve3: {
-    ranges: {
-      phase: range(0, 1),
-      offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
-    }
-  }
-};
+
 
 
 const mapStateToProps = (state) => {
