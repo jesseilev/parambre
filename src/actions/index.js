@@ -29,6 +29,11 @@ export const waveChange = (newWave) => ({
   newWave
 })
 
+export const boxAdjustment = (params) => ({
+  type: 'BOX_ADJUSTMENT',
+  params
+})
+
 export const dragDelta = (payload) => ({
   type: 'DRAG_DELTA',
   payload

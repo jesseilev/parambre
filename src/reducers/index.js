@@ -1,7 +1,5 @@
 // import { combineReducers } from 'redux'
 import { combineReducers, Cmd, loop } from 'redux-loop'
-import todos from './todos'
-import visibilityFilter from './visibilityFilter'
 import audioPlayer from './audioPlayer'
 import {timbreParams} from './timbreParams'
 import {frequencyData} from './frequencyData'
@@ -15,8 +13,8 @@ export const rootReducer = (state, action) => {
   switch(action.type) {
     case 'GRAPH_UPDATE':
       return loop(state, Cmd.run(() => updateGaph(state)));
+
     default:
-    
       const comboReducer = combineReducers({
         timbreParams,
         audioPlayer,
@@ -26,10 +24,3 @@ export const rootReducer = (state, action) => {
       return newStateAndCmd
   }
 };
-
-// export const rootReducer = combineReducers({
-//   // graphUpdaterReducer,
-//   timbreParams
-//   audioPlayer,
-//   frequencyData
-// });

@@ -27,30 +27,25 @@ const initialState = {
 
 
 export const timbreParams = (state = initialState, action) => {
-  const addBy = R.curry(R.add);
-  
 
   switch(action.type) {
-    case 'DRAG_DELTA':
-      const { lensPaths, delta } = action.payload;
-      const xLens = R.lensPath(lensPaths.x);
-      const yLens = R.lensPath(lensPaths.y);
-      const updateX = R.curry(R.over(xLens, addBy(delta.x)));
-      const updateY = R.curry(R.over(yLens, addBy(delta.y)));
+    case 'BOX_ADJUSTMENT':
+      const updateParam = ({value, lensPath}) => (
+        // overwrite the old value at lensPath with new value
+        R.curry(R.set(R.lensPath(lensPath), value))
+      );
+      // a list of update functions, one for each param
+      const updaterFuncs = R.map(updateParam, action.params);
+
+      // pipe the state through each of the update functions
+      const newState = R.reduce(R.applyTo, state, updaterFuncs);
+
+      // return new state and a command to dispatch the GRAPH_UPDATE action
       return loop(
-        R.compose(updateX, updateY)(state),
+        newState,
         Cmd.action(graphUpdate())
       );
-    case 'RESIZE_DELTA':
-      const p = action.payload;
-      const widthLens = R.lensPath(p.lensPaths.width);
-      const heightLens = R.lensPath(p.lensPaths.height);
-      const updateWidth = R.curry(R.over(widthLens, addBy(p.delta.width)));
-      const updateHeight = R.curry(R.over(heightLens, addBy(p.delta.height)));
-      return loop(
-        R.compose(updateWidth, updateHeight)(state),
-        Cmd.action(graphUpdate())
-      );
+
     default:
       return state;
   }
