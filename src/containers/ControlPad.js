@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {withSize} from 'react-sizeme';
 import SliderFor2Params from './SliderFor2Params';
+import Visualizer from '../containers/Visualizer';
 
 
 
@@ -14,6 +15,8 @@ const ControlPad = (props) => (
     background: '#333'
   }}
   >
+    <Visualizer />
+
     <SliderFor2Params 
     parentSize={props.size}
     lensPaths={{

@@ -111,7 +111,7 @@ export const buildAudioNodes = (state) => {
   })
   return {
     1000: analyser('output', {
-      fftSize: 256
+      fftSize: 1024
     }),
 
     0: gain(1000, {
