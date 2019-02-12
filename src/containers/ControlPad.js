@@ -54,7 +54,7 @@ const settings = {
     ranges: {
       phase: range(0, 1),
       offset: range(0, 1),
-      freq: range(0, 8),
+      period: range(0.1, 1),
       amp: range(0, 1)
     }
   },
@@ -62,7 +62,7 @@ const settings = {
     ranges: {
       phase: range(0, 1),
       offset: range(0, 1),
-      freq: range(0, 8),
+      period: range(0.1, 1),
       amp: range(0, 1)
     }
   },
@@ -70,7 +70,7 @@ const settings = {
     ranges: {
       phase: range(0, 1),
       offset: range(0, 1),
-      freq: range(0, 8),
+      period: range(0.1, 1),
       amp: range(0, 1)
     }
   }
@@ -91,9 +91,9 @@ const mapStateToProps = (state) => {
       lensPath: [ curveKeyName, 'offset' ]
     },
     width: {
-      value: curve.freq,
-      range: curveSettings.ranges.freq,
-      lensPath: [ curveKeyName, 'freq' ]
+      value: curve.period,
+      range: curveSettings.ranges.period,
+      lensPath: [ curveKeyName, 'period' ]
     },
     height: {
       value: curve.amp,

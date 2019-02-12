@@ -13,8 +13,8 @@ import createVirtualAudioGraph, {
 import audioContext from './audioContext';
 
 
-const sine = ({amp, freq, offset, phase}, x) => (
-  offset + amp * Math.sin(x * freq + phase)
+const sine = ({amp, period, offset, phase}, x) => (
+  offset + amp * Math.sin( (x / period) + phase )
 );
 
 

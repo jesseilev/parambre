@@ -8,19 +8,19 @@ const initialState = {
   curve1: {
     phase: 0.3,
     offset: 0.5,
-    freq: 0.5,
+    period: 0.5,
     amp: 0.5
   },
   curve2: {
     phase: 0.7,
     offset: 0.25,
-    freq: 0.15,
+    period: 0.15,
     amp: 0.85
   },
   curve3: {
     phase: 0.4,
     offset: 0.95,
-    freq: 0.55,
+    period: 0.55,
     amp: 0.8
   }
 };
