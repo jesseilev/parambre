@@ -15,7 +15,7 @@ const handleSize = { width: 20, height: 20 }
 const AdjustableBoxFor4Params = (props) => {
   const { 
     xParam, yParam, widthParam, heightParam, parentSize,
-    onDrag, onResize, onDragStart, onDragStop 
+    onDrag, onResize, onBoxAdjustmentStart, onBoxAdjustmentEnd 
   } = props;
 
   const x = mapBetweenRanges(
@@ -48,10 +48,10 @@ const AdjustableBoxFor4Params = (props) => {
       zoomable={'nw, ne, sw, se'}
       onDrag={onDrag(parentSize, xParam, yParam)}
       onResize={onResize(parentSize, widthParam, heightParam)}
-      onDragStart={onDragStart}
-      onDragEnd={onDragStop}
-      onResizeStart={onDragStart}
-      onResizeEnd={onDragStop}
+      onDragStart={onBoxAdjustmentStart}
+      onDragEnd={onBoxAdjustmentEnd}
+      onResizeStart={onBoxAdjustmentStart}
+      onResizeEnd={onBoxAdjustmentEnd}
       style={{'background': props.color}}
     >
     </ResizableRect>
@@ -63,10 +63,10 @@ AdjustableBoxFor4Params.propTypes = {
   yParam: PropTypes.object.isRequired,
   widthParam: PropTypes.object.isRequired,
   heightParam: PropTypes.object.isRequired,
-  // width: PropTypes.number.isRequired,
-  // height: PropTypes.number.isRequired,
-  // onDrag: PropTypes.func.isRequired,
-  // onResize: PropTypes.func.isRequired
+  parentSize: PropTypes.object.isRequired,
+  onDrag: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
+
 };
 
 
@@ -113,10 +113,10 @@ const mapDispatchToProps = (dispatch) => ({
       ]));
     }
   ),
-  onDragStart: () => {
+  onBoxAdjustmentStart: () => {
     return dispatch(setPlayback(true));
   },
-  onDragStop: () => {
+  onBoxAdjustmentEnd: () => {
     return dispatch(setPlayback(false));
   }
 });
