@@ -46,7 +46,7 @@ class Visualizer extends Component {
       // visualize overtone amplitude
       context.fillStyle = 'orange';
       context.beginPath();
-      context.arc(x, y, 6, 2 * Math.PI, false);
+      context.arc(x, y, 8, 2 * Math.PI, false);
       context.fill();
 
       // visualize modulation magnitude

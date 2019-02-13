@@ -86,7 +86,7 @@ for (let i = 0; i < bufferSize; i++) {
 
 export const buildAudioNodes = (state) => {
 
-  const attack = 0.1;
+  const attack = 0.03;
   const release = 2;
   const { currentTime } = state.audioPlayer.audioGraph || 0;
   const targetGain = state.audioPlayer.isPlaying ? 0.2 : 0;
@@ -96,13 +96,13 @@ export const buildAudioNodes = (state) => {
   const curveType = stillRamping ? 'linearRampToValueAtTime' : 'setValueAtTime';
   targetFinishTime = stillRamping ? targetFinishTime : currentTime;
 
-  const rootFreq = 180;
+  const rootFreq = 150;
   
   const {curve1, curve2, curve3} = state.timbreParams;
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
-    toneCount: 50,
+    toneCount: 60,
     overtoneAmp: i => sine(curve1, i),
     overtoneModulationAmp: (i) => sine(curve2, i),
     overtoneModulationFreq: (i) => sine(curve3, i) * 12,
