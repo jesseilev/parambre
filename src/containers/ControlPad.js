@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {withSize} from 'react-sizeme';
 import AdjustableBoxFor4Params from './AdjustableBoxFor4Params';
 import Visualizer from '../containers/Visualizer';
-import {range} from '../utils/range';
+import {range} from '../utils';
 
 // TODO inject settings into state instead of doing thing
 import {settings} from '../reducers/timbreParams';
@@ -14,11 +14,13 @@ const ControlPad = (props) => (
   <div
   style={{
     width: '100%',
-    height: '700px',
-    background: '#333'
+    height: '100vh',
+    background: '#222'
   }}
   >
-    <Visualizer />
+    <Visualizer 
+    parentSize={props.size}
+    />
 
     <AdjustableBoxFor4Params 
     parentSize={props.size}

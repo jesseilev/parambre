@@ -11,11 +11,9 @@ import createVirtualAudioGraph, {
   analyser
 } from 'virtual-audio-graph';
 import audioContext from './audioContext';
+import {sine} from './utils';
 
 
-const sine = ({amp, period, offset, phase}, x) => (
-  offset + amp * Math.sin( (x / period) + phase )
-);
 
 
 
@@ -104,10 +102,10 @@ export const buildAudioNodes = (state) => {
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
-    toneCount: 25,
+    toneCount: 50,
     overtoneAmp: i => sine(curve1, i),
-    overtoneModulationFreq: (i) => sine(curve2, i) * 8,
-    overtoneModulationAmp: (i) => sine(curve3, i)
+    overtoneModulationAmp: (i) => sine(curve2, i),
+    overtoneModulationFreq: (i) => sine(curve3, i) * 12,
   })
   return {
     1000: analyser('output', {

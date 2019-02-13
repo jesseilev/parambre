@@ -2,33 +2,33 @@ import * as R from 'ramda';
 import {Cmd, loop} from 'redux-loop';
 // import updateGraph from '../synth.js';
 import {graphUpdate} from '../actions';
-import {range, mapBetweenRanges} from '../utils/range';
+import {range, mapBetweenRanges} from '../utils';
 
 
 
 export const settings = {
   curve1: {
     ranges: {
-      phase: range(0, 1),
+      phase: range(0, 8),
       offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
+      period: range(4, 12),
+      amp: range(0, 0.5)
     }
   },
   curve2: {
     ranges: {
-      phase: range(0, 1),
+      phase: range(0, 8),
       offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
+      period: range(4, 12),
+      amp: range(0, 0.5)
     }
   },
   curve3: {
     ranges: {
-      phase: range(0, 1),
+      phase: range(0, 8),
       offset: range(0, 1),
-      period: range(0.1, 1),
-      amp: range(0, 1)
+      period: range(4, 12),
+      amp: range(0, 0.5)
     }
   }
 };
@@ -43,7 +43,7 @@ const genRandomCurve = (ranges) => {
   };
 };
 
-const initialState = {
+export const initialState = {
   curve1: genRandomCurve(settings.curve1.ranges),
   curve2: genRandomCurve(settings.curve2.ranges),
   curve3: genRandomCurve(settings.curve3.ranges)

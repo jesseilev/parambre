@@ -1,3 +1,6 @@
+export const sine = ({amp, period, offset, phase}, x) => (
+  offset + amp * Math.sin( (2 * Math.PI * x / period) + phase )
+);
 
 export const range = (min, max) => ({ min: min, max: max });
 

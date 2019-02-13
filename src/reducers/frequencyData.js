@@ -1,5 +1,5 @@
 
-const initialState = new Uint8Array();
+export const initialState = new Uint8Array();
 
 export const frequencyData = (state = initialState, action) => {
   switch (action.type) {

@@ -16,13 +16,13 @@ const audioGraph = createVirtualAudioGraph({
   output: audioContext.destination
 });
 
-const initialState = {
+export const initialState = {
   isPlaying: false,
   mostRecentPlayPauseChange: 0,
   audioGraph: audioGraph
 }
 
-const audioPlayer = (state = initialState, action) => {
+export const audioPlayer = (state = initialState, action) => {
   const setIsPlaying = (newIsPlaying) => {
     const newState = {
       ...state,
@@ -41,5 +41,3 @@ const audioPlayer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default audioPlayer;

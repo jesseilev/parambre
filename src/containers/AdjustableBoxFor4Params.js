@@ -7,7 +7,7 @@ import {withSize} from 'react-sizeme';
 import * as R from 'ramda';
 
 import {boxAdjustment, setPlayback} from '../actions';
-import {range, mapBetweenRanges} from '../utils/range';
+import {range, mapBetweenRanges} from '../utils';
 
 
 const handleSize = { width: 20, height: 20 }
