@@ -52,32 +52,26 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
-  console.log(state.timbreParams.curve1);
-
   // console.log(state.timbreParams.curve1);
-  // updateGraph(state);
-
-  // audioGraph.update(currentAudioGraph(state, audioGraph));
-  // virtualAudioGraph.update(
-  //   state.playback ? currentGraph(state) : {}
-  // );
 });
 
 
-function updateFFT(timestamp) {
-  requestAnimationFrame(updateFFT);
 
-  // console.log(timestamp);
-  // extract fft data
-  const state = store.getState();
-  const analyzerNode = state.audioPlayer.audioGraph.getAudioNodeById(1000);
-  if (analyzerNode !== undefined) {
-    let dataArray = new Uint8Array(analyzerNode.frequencyBinCount);
-    analyzerNode.getByteFrequencyData(dataArray);
 
-    // dispatch to the store  
-    store.dispatch(fftUpdate(dataArray))
-  }
-};
+// function updateFFT(timestamp) {
+//   requestAnimationFrame(updateFFT);
 
-updateFFT();
+//   // console.log(timestamp);
+//   // extract fft data
+//   const state = store.getState();
+//   const analyzerNode = state.audioPlayer.audioGraph.getAudioNodeById(1000);
+//   if (analyzerNode !== undefined) {
+//     let dataArray = new Uint8Array(analyzerNode.frequencyBinCount);
+//     analyzerNode.getByteFrequencyData(dataArray);
+
+//     // dispatch to the store  
+//     store.dispatch(fftUpdate(dataArray))
+//   }
+// };
+
+// updateFFT();
