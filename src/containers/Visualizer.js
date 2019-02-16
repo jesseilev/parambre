@@ -23,7 +23,7 @@ class Visualizer extends Component {
   }
 
   draw() {
-    const { frequencyData, overtones } = this.props;
+    const { overtones } = this.props;
     const canvas = this.canvas.current;
     const context = canvas.getContext('2d');
     const sliceWidth = canvas.width / overtones.length;
