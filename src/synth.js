@@ -102,7 +102,7 @@ export const buildAudioNodes = (state) => {
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
-    toneCount: 60,
+    toneCount: state.settings.toneCount,
     overtoneAmp: i => sine(curve1, i),
     overtoneModulationAmp: (i) => sine(curve2, i),
     overtoneModulationFreq: (i) => sine(curve3, i) * 12,
