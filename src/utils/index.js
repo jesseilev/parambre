@@ -10,3 +10,7 @@ export const mapBetweenRanges = (fromRange, toRange, value) => {
   const percent = (value - fromRange.min) / rangeDistance(fromRange);
   return toRange.min + (percent * rangeDistance(toRange));
 };
+
+export const clampToRange = (range, value) => (
+  Math.max(range.min, Math.min(range.max, value))
+);

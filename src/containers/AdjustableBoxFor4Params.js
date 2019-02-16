@@ -7,7 +7,7 @@ import {withSize} from 'react-sizeme';
 import * as R from 'ramda';
 
 import {boxAdjustment, setPlayback} from '../actions';
-import {range, mapBetweenRanges} from '../utils';
+import {range, mapBetweenRanges, clampToRange} from '../utils';
 
 
 const handleSize = { width: 20, height: 20 }
@@ -89,9 +89,13 @@ const mapDispatchToProps = (dispatch) => ({
         yParam.range,
         deltaY
       );
+
+      const newX = clampToRange(xParam.range, xParam.value + compressedDeltaX);
+      const newY = clampToRange(yParam.range, yParam.value + compressedDeltaY);
+
       return dispatch(boxAdjustment([
-        { ...xParam, value: xParam.value + compressedDeltaX },
-        { ...yParam, value: yParam.value + compressedDeltaY }
+        { ...xParam, value: newX },
+        { ...yParam, value: newY }
       ]));
     }
   ),
@@ -107,9 +111,13 @@ const mapDispatchToProps = (dispatch) => ({
         heightParam.range,
         currentBoxOnScreen.height
       );
+
+      const newWidth = clampToRange(widthParam.range, compressedWidth);
+      const newHeight = clampToRange(heightParam.range, compressedHeight);
+
       return dispatch(boxAdjustment([
-        { ...widthParam, value: compressedWidth },
-        { ...heightParam, value: compressedHeight }
+        { ...widthParam, value: newWidth },
+        { ...heightParam, value: newHeight }
       ]));
     }
   ),

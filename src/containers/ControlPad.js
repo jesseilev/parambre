@@ -13,14 +13,12 @@ import {settings} from '../reducers/timbreParams';
 const ControlPad = (props) => (
   <div
   style={{
-    width: '100%',
-    height: '100vh',
-    background: '#222'
+    width: '50%',
+    height: '50%',
+    // border: '2px solid #222'
   }}
   >
-    <Visualizer 
-    parentSize={props.size}
-    />
+    
 
     <AdjustableBoxFor4Params 
     parentSize={props.size}

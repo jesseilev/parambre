@@ -1,10 +1,10 @@
 import React from 'react';
-import ControlPad from '../containers/ControlPad';
-
+import {withSize} from 'react-sizeme';
+import ParambreContainer from '../containers/ParambreContainer';
 
 const App = () => (
   <div>
-    <ControlPad />
+    <ParambreContainer />
   </div>
 );
 
