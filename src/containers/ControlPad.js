@@ -15,7 +15,8 @@ const ControlPad = (props) => (
   style={{
     width: '50%',
     height: '50%',
-    // border: '2px solid #222'
+    // border: '1px solid #222'
+    background: 'rgba(255, 255, 255, 0.05)'
   }}
   >
     
@@ -47,7 +48,7 @@ const ControlPad = (props) => (
     yParam={props.curve3Params.y}
     widthParam={props.curve3Params.width}
     heightParam={props.curve3Params.height}
-    color={'#1502703'}
+    color={'#893423'}
     >
     </AdjustableBoxFor4Params>
   </div>
