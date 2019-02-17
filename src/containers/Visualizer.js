@@ -36,6 +36,7 @@ class Visualizer extends Component {
       const x = (index + 0.5) * sliceWidth;
       const y = amplitude * maxHeight + maxHeight * 0.5;
 
+
       // draw the circle
       context.strokeStyle = 'orange';
       context.lineWidth = 1;
@@ -50,7 +51,7 @@ class Visualizer extends Component {
       context.lineWidth = 1;
       context.strokeStyle = 'magenta';
       context.beginPath();
-      // line length based on modulation magnitude
+      // line height based on modulation magnitude
       const modulation = modulationMagntiude * maxHeight;
       context.moveTo(x, y - modulation * 0.5);
       context.lineTo(x, y + modulation * 0.5);

@@ -52,7 +52,7 @@ const AdjustableBoxFor4Params = (props) => {
       onDragEnd={onBoxAdjustmentEnd}
       onResizeStart={onBoxAdjustmentStart}
       onResizeEnd={onBoxAdjustmentEnd}
-      style={{'background': props.color}}
+      style={{'cursor': 'move'}}
     >
     </ResizableRect>
   );

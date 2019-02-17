@@ -27,6 +27,7 @@ const ControlPad = (props) => (
     widthParam={props.curve1Params.width}
     heightParam={props.curve1Params.height}
     color={'#509308'}
+    style={{'cursor': 'move'}}
     >
     </AdjustableBoxFor4Params>
 
