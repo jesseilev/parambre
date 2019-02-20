@@ -29,7 +29,8 @@ import {rootReducer, initialState} from './reducers';
 
 const enhancer = compose(
   applyMiddleware(ReduxEmitter()),
-  install()
+  install(),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
 
 const store = createStore(rootReducer, initialState, enhancer);
