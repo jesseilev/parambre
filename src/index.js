@@ -52,7 +52,7 @@ render(
 
 store.subscribe(() => {
   const state = store.getState();
-  // console.log(state.timbreParams.curve1);
+  // console.log(state.audioPlayer.isPlaying);
 });
 
 

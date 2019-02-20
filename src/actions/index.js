@@ -34,6 +34,16 @@ export const boxAdjustment = (params) => ({
   params
 })
 
+export const boxAdjustmentStart = (paramSetName) => ({
+  type: 'BOX_ADJUSTMENT_START',
+  paramSetName
+})
+
+export const boxAdjustmentStop = (paramSetName) => ({
+  type: 'BOX_ADJUSTMENT_STOP',
+  paramSetName
+})
+
 export const dragDelta = (payload) => ({
   type: 'DRAG_DELTA',
   payload

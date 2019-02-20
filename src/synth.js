@@ -105,14 +105,11 @@ export const buildAudioNodes = (state) => {
     toneCount: state.settings.toneCount,
     overtoneAmp: i => sine(curve1, i),
     overtoneModulationAmp: (i) => sine(curve2, i),
-    overtoneModulationFreq: (i) => sine(curve3, i) * 12,
+    overtoneModulationFreq: (i) => sine(curve3, i) * 20,
   })
   return {
-    1000: analyser('output', {
-      fftSize: 1024
-    }),
 
-    0: gain(1000, {
+    0: gain('output', {
         gain: [ curveType, targetGain, targetFinishTime ]
       // gain: [ 
       //   ['setValueAtTime', 0, currentTime],
@@ -121,10 +118,10 @@ export const buildAudioNodes = (state) => {
       // ]
     }),
 
-    1: genCustom(rootFreq * 8 / 9),
-    2: genCustom(rootFreq * 8 / 3),
-    3: genCustom(rootFreq * 12 / 5),
-    4: genCustom(rootFreq * 9 / 5)
+    1: genCustom(rootFreq * 1),   // 1
+    2: genCustom(rootFreq * 16 / 3),   // 3
+    3: genCustom(rootFreq * 12 / 5),  // 27/10
+    4: genCustom(rootFreq * 9 / 5)    // 2
 
     // 1: biquadFilter(0, {
     //   type: 'lowpass',

@@ -6,27 +6,29 @@ import ResizableRect from 'react-resizable-rotatable-draggable';
 import {withSize} from 'react-sizeme';
 import * as R from 'ramda';
 
-import {boxAdjustment, setPlayback} from '../actions';
-import {range, mapBetweenRanges, clampToRange} from '../utils';
+import {boxAdjustment, boxAdjustmentStart, boxAdjustmentStop} from '../actions';
+import {range, mapBetweenRanges, clampToRange, rangeDistance} from '../utils';
 
 
 const resizeHandleStyles = (color) => ({ 
-  width: 15, height: 15,
-  background: color
+  width: 20, height: 20,
+  background: color,
 });
+
 
 const AdjustableBoxFor4Params = (props) => {
   const { 
-    xParam, yParam, widthParam, heightParam, parentSize,
-    onDrag, onResize, onBoxAdjustmentStart, onBoxAdjustmentEnd 
+    xParam, yParam, widthParam, heightParam, parentSize, zIndex,
+    paramSetName, boxBeingAdjusted,
+    onDrag, onResize, onBoxAdjustmentStart, onBoxAdjustmentStop
   } = props;
 
-  const x = mapBetweenRanges(
+  const centerX = mapBetweenRanges(
     xParam.range, 
     range(0, parentSize.width), 
     xParam.value
   );
-  const y = mapBetweenRanges(
+  const centerY = mapBetweenRanges(
     yParam.range, 
     range(0, parentSize.height), 
     yParam.value
@@ -42,28 +44,73 @@ const AdjustableBoxFor4Params = (props) => {
     heightParam.value
   );
 
+    const PositionBounds = ( 
+      <div
+        style={{
+        width: parentSize.width,
+        height: parentSize.height,
+        left: -centerX + (width * 0.5),
+        top: -centerY + (height * 0.5),
+        borderColor: 'red',
+        borderStyle: 'dashed',
+        borderWidth: boxBeingAdjusted === 'ME' ? '1px' : '0px',
+        position: 'fixed'
+        }}
+      >
+      </div>
+    );
+
+    const SizeBounds = (
+      <div
+      style={{
+        width: parentSize.width,
+        height: parentSize.height,
+        borderColor: 'white',
+        borderStyle: 'dashed',
+        borderWidth: boxBeingAdjusted === 'ME' ? '1px' : '0px',
+        position: 'fixed'
+      }}
+      >
+      </div>
+    );
+
+
   return (
     <Rnd
     position={{
-      x: x - width * 0.5,
-      y: y - height * 0.5
+      x: centerX - width * 0.5,
+      y: centerY - height * 0.5
     }}
     size={{
       width: width,
       height: height
     }}
+
+    bounds={'parent'}
+
+    maxWidth={ parentSize.width * 0.5 }
+    maxHeight={ parentSize.height }
+    minWidth={60}
+    minHeight={60}
+
     style={{
-      border: '2px solid ' + props.color
-      // background: props.color
+      border: '5px solid white',
+      background: boxBeingAdjusted === 'ME' ? 'rgba(0,0,0,0)' : props.color,
+      opacity: boxBeingAdjusted === 'SOMEONE_ELSE' ? 0 : 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.2)',
+      zIndex: zIndex,
     }}
     
     onDrag={onDrag(parentSize, xParam, yParam)}
     onResize={onResize(parentSize, widthParam, heightParam)}
 
-    onDragStart={onBoxAdjustmentStart}
-    onDragStop={onBoxAdjustmentEnd}
-    onResizeStart={onBoxAdjustmentStart}
-    onResizeStop={onBoxAdjustmentEnd}
+    onDragStart={onBoxAdjustmentStart(paramSetName)}
+    onDragStop={onBoxAdjustmentStop(paramSetName)}
+    onResizeStart={onBoxAdjustmentStart(paramSetName)}
+    onResizeStop={onBoxAdjustmentStop(paramSetName)}
     
     enableResizing={{
       topLeft: true,
@@ -73,14 +120,14 @@ const AdjustableBoxFor4Params = (props) => {
     }}
 
     resizeHandleStyles={{
-      topLeft: resizeHandleStyles(props.color),
-      topRight: resizeHandleStyles(props.color),
-      bottomLeft: resizeHandleStyles(props.color),
-      bottomRight: resizeHandleStyles(props.color)
+      topLeft: resizeHandleStyles('white'),
+      topRight: resizeHandleStyles('white'),
+      bottomLeft: resizeHandleStyles('white'),
+      bottomRight: resizeHandleStyles('white')
     }}
 
-    // bounds={'parent'}
     >
+      {boxBeingAdjusted === 'ME' ? '' : ''}
     </Rnd>
   );
 
@@ -118,61 +165,64 @@ AdjustableBoxFor4Params.propTypes = {
 const pixelsPerPeriod = 50;
 
 const mapStateToProps = (state, ownProps) => {
-  return {};
+  const cpsba = state.timbreParams.currentParamSetBeingAdjusted;
+  let boxBeingAdjusted = null;
+  if (cpsba === ownProps.paramSetName) {
+    boxBeingAdjusted = 'ME';
+  } 
+  else if (cpsba !== null) {
+    boxBeingAdjusted = 'SOMEONE_ELSE';
+  }
+
+  return {
+    boxBeingAdjusted: boxBeingAdjusted
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   onDrag: (containerSize, xParam, yParam) => (
-    (dragEvent) => {
+    (mouseEvent, dragData) => {
       const compressedDeltaX = mapBetweenRanges(
-        range(0, containerSize.width),
-        xParam.range,
-        dragEvent.movementX
+        range(0, containerSize.width), 
+        range(0, rangeDistance(xParam.range)), 
+        dragData.deltaX
       );
       const compressedDeltaY = mapBetweenRanges(
-        range(0, containerSize.height),
-        yParam.range,
-        dragEvent.movementY
+        range(0, containerSize.height), 
+        range(0, rangeDistance(yParam.range)), 
+        dragData.deltaY
       );
 
-      const newX = clampToRange(xParam.range, xParam.value + compressedDeltaX);
-      const newY = clampToRange(yParam.range, yParam.value + compressedDeltaY);
-
       return dispatch(boxAdjustment([
-        { ...xParam, value: newX },
-        { ...yParam, value: newY }
+        { ...xParam, value: xParam.value + compressedDeltaX },
+        { ...yParam, value: yParam.value + compressedDeltaY }
       ]));
     }
   ),
   onResize: (containerSize, widthParam, heightParam) => (
-    (resizeEvent, resizeType, refToElement) => {
-      // debugger;
-      console.log(resizeEvent);
-      const compressedWidth = mapBetweenRanges(
+    (event, directionType, refToElement, delta, position) => {
+      const widthParamNewValue = mapBetweenRanges(
         range(0, containerSize.width),
         widthParam.range,
         refToElement.clientWidth
       );
-      const compressedHeight = mapBetweenRanges(
+      const heightParamNewValue = mapBetweenRanges(
         range(0, containerSize.height),
         heightParam.range,
         refToElement.clientHeight
       );
 
-      const newWidth = clampToRange(widthParam.range, compressedWidth);
-      const newHeight = clampToRange(heightParam.range, compressedHeight);
-
       return dispatch(boxAdjustment([
-        { ...widthParam, value: newWidth },
-        { ...heightParam, value: newHeight }
+        { ...widthParam, value: widthParamNewValue },
+        { ...heightParam, value: heightParamNewValue }
       ]));
     }
   ),
-  onBoxAdjustmentStart: () => {
-    return dispatch(setPlayback(true));
+  onBoxAdjustmentStart: (paramSetName) => {
+    return () => dispatch(boxAdjustmentStart(paramSetName));
   },
-  onBoxAdjustmentEnd: () => {
-    return dispatch(setPlayback(false));
+  onBoxAdjustmentStop: (paramSetName) => {
+    return () => dispatch(boxAdjustmentStop(paramSetName));
   }
 });
 

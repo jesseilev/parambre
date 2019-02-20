@@ -12,7 +12,7 @@ export const initialState = {
   frequencyData: FD.initialState,
   settings: {
     ...(TP.settings),
-    toneCount: 50
+    toneCount: 30
   }
 };
 

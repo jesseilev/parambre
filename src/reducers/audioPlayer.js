@@ -35,8 +35,10 @@ export const audioPlayer = (state = initialState, action) => {
   switch(action.type) {
     case 'TOGGLE_PLAYBACK':
       return setIsPlaying(!state.isPlaying);
-    case 'SET_PLAYBACK':
-      return setIsPlaying(action.newIsPlaying);
+    case 'BOX_ADJUSTMENT_START':
+      return setIsPlaying(true);
+    case 'BOX_ADJUSTMENT_STOP':
+      return setIsPlaying(false);
     default:
       return state;
   }

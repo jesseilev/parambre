@@ -9,44 +9,48 @@ import {range, mapBetweenRanges} from '../utils';
 export const settings = {
   curve1: {
     ranges: {
-      phase: range(0, 8),
+      phase: range(0, 18),
       offset: range(0, 1),
-      period: range(4, 12),
-      amp: range(0, 0.5)
+      period: range(2, 20),
+      amp: range(0, 1)
     }
   },
   curve2: {
     ranges: {
-      phase: range(0, 8),
+      phase: range(0, 18),
       offset: range(0, 1),
-      period: range(4, 12),
-      amp: range(0, 0.5)
+      period: range(2, 20),
+      amp: range(0, 1)
     }
   },
   curve3: {
     ranges: {
-      phase: range(0, 8),
+      phase: range(0, 18),
       offset: range(0, 1),
-      period: range(4, 12),
-      amp: range(0, 0.5)
+      period: range(2, 20),
+      amp: range(0, 1)
     }
   }
 };
 
 const genRandomCurve = (ranges) => {
   const mapFrom01To = (r, n) => mapBetweenRanges(range(0, 1), r, n);
+  const randomInRange = (min, max) => (
+    mapFrom01To(range(min, max), Math.random())
+  );
   return {
-    phase: mapFrom01To(ranges.phase, Math.random()),
-    offset: mapFrom01To(ranges.offset, Math.random()),
-    period: mapFrom01To(ranges.period, Math.random()),
-    amp: mapFrom01To(ranges.amp, Math.random())
+    phase: mapFrom01To(ranges.phase, randomInRange(0.25, 0.75)),
+    offset: mapFrom01To(ranges.offset, randomInRange(0.25, 0.75)),
+    period: mapFrom01To(ranges.period, randomInRange(0.1, 0.5)),
+    amp: mapFrom01To(ranges.amp, randomInRange(0.1, 0.5))
   };
 };
 
 export const initialState = {
   curve1: genRandomCurve(settings.curve1.ranges),
   curve2: genRandomCurve(settings.curve2.ranges),
-  curve3: genRandomCurve(settings.curve3.ranges)
+  curve3: genRandomCurve(settings.curve3.ranges),
+  currentParamSetBeingAdjusted: null
 };
 
 
@@ -69,6 +73,18 @@ export const timbreParams = (state = initialState, action) => {
         newState,
         Cmd.action(graphUpdate())
       );
+
+    case 'BOX_ADJUSTMENT_START':
+      return {
+        ...state,
+        currentParamSetBeingAdjusted: action.paramSetName
+      }
+
+    case 'BOX_ADJUSTMENT_STOP':
+      return {
+        ...state,
+        currentParamSetBeingAdjusted: null
+      }
 
     default:
       return state;
