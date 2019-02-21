@@ -10,11 +10,11 @@ import {boxAdjustment, boxAdjustmentStart, boxAdjustmentStop} from '../actions';
 import {range, mapBetweenRanges, clampToRange, rangeDistance} from '../utils';
 
 
-const resizeHandleStyles = (color) => ({ 
-  width: 20, height: 20,
-  background: color,
-});
-
+const resizeHandleStyles = { 
+  width: 20, 
+  height: 20,
+  background: '#ddd',
+};
 
 const AdjustableBoxFor4Params = (props) => {
   const { 
@@ -43,37 +43,6 @@ const AdjustableBoxFor4Params = (props) => {
     range(0, parentSize.height),
     heightParam.value
   );
-
-    const PositionBounds = ( 
-      <div
-        style={{
-        width: parentSize.width,
-        height: parentSize.height,
-        left: -centerX + (width * 0.5),
-        top: -centerY + (height * 0.5),
-        borderColor: 'red',
-        borderStyle: 'dashed',
-        borderWidth: boxBeingAdjusted === 'ME' ? '1px' : '0px',
-        position: 'fixed'
-        }}
-      >
-      </div>
-    );
-
-    const SizeBounds = (
-      <div
-      style={{
-        width: parentSize.width,
-        height: parentSize.height,
-        borderColor: 'white',
-        borderStyle: 'dashed',
-        borderWidth: boxBeingAdjusted === 'ME' ? '1px' : '0px',
-        position: 'fixed'
-      }}
-      >
-      </div>
-    );
-
 
   return (
     <Rnd
@@ -120,34 +89,14 @@ const AdjustableBoxFor4Params = (props) => {
     }}
 
     resizeHandleStyles={{
-      topLeft: resizeHandleStyles('#ddd'),
-      topRight: resizeHandleStyles('#ddd'),
-      bottomLeft: resizeHandleStyles('#ddd'),
-      bottomRight: resizeHandleStyles('#ddd')
+      topLeft: resizeHandleStyles,
+      topRight: resizeHandleStyles,
+      bottomLeft: resizeHandleStyles,
+      bottomRight: resizeHandleStyles,
     }}
-
     >
-      {boxBeingAdjusted === 'ME' ? '' : ''}
     </Rnd>
   );
-
-  // return (
-  //   <ResizableRect
-  //     left={x - width * 0.5}
-  //     top={y - height * 0.5}
-  //     width={width}
-  //     height={height}
-  //     zoomable={'nw, ne, sw, se'}
-  //     onDrag={onDrag(parentSize, xParam, yParam)}
-  //     onResize={onResize(parentSize, widthParam, heightParam)}
-  //     onDragStart={onBoxAdjustmentStart}
-  //     onDragEnd={onBoxAdjustmentEnd}
-  //     onResizeStart={onBoxAdjustmentStart}
-  //     onResizeEnd={onBoxAdjustmentEnd}
-  //     style={{'cursor': 'move'}}
-  //   >
-  //   </ResizableRect>
-  // );
 };
 
 AdjustableBoxFor4Params.propTypes = {
@@ -158,11 +107,8 @@ AdjustableBoxFor4Params.propTypes = {
   parentSize: PropTypes.object.isRequired,
   onDrag: PropTypes.func.isRequired,
   onResize: PropTypes.func.isRequired,
-
 };
 
-
-const pixelsPerPeriod = 50;
 
 const mapStateToProps = (state, ownProps) => {
   const cpsba = state.timbreParams.currentParamSetBeingAdjusted;

@@ -27,7 +27,9 @@ class Visualizer extends Component {
     const { overtones, isPlaying, colors } = this.props;
     const canvas = this.canvas.current;
     const context = canvas.getContext('2d');
-    const sliceWidth = canvas.width / overtones.length;
+
+    const xPaddingUnits = 2;
+    const sliceWidth = canvas.width / (overtones.length + (xPaddingUnits * 2));
     const maxHeight = canvas.height * 0.5;
     const maxRadius = canvas.width * 0.05;
 
@@ -39,7 +41,7 @@ class Visualizer extends Component {
     
     overtones.map(( overtone, index ) => {
       const { overtoneAmplitude, modulationMagnitude, modulationFrequency } = overtone;
-      const x = (index + 0.5) * sliceWidth;
+      const x = (index + xPaddingUnits + 0.5) * sliceWidth;
       const y = overtoneAmplitude * maxHeight + (maxHeight * 0.5);
 
       // draw the modulation magnitude line
@@ -58,10 +60,6 @@ class Visualizer extends Component {
       context.beginPath();
       context.arc(x, y, 8, 2 * Math.PI, false);
       context.fill();
-      // context.strokeStyle = 'red';
-      // context.moveTo(x, 0);
-      // context.lineTo(x, y)
-      // context.stroke();
       
       // draw the modulation frequency circle
       context.strokeStyle = colors.modulationFrequencies;

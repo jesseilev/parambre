@@ -40,9 +40,9 @@ const genRandomCurve = (ranges) => {
   );
   return {
     phase: mapFrom01To(ranges.phase, randomInRange(0.25, 0.75)),
-    offset: mapFrom01To(ranges.offset, randomInRange(0.25, 0.75)),
-    period: mapFrom01To(ranges.period, randomInRange(0.1, 0.5)),
-    amp: mapFrom01To(ranges.amp, randomInRange(0.1, 0.5))
+    offset: mapFrom01To(ranges.offset, randomInRange(0.4, 0.6)),
+    period: mapFrom01To(ranges.period, randomInRange(0.1, 0.4)),
+    amp: mapFrom01To(ranges.amp, randomInRange(0.3, 0.8))
   };
 };
 
@@ -63,7 +63,7 @@ export const timbreParams = (state = initialState, action) => {
       const updateParam = ({value, lensPath}) => (
         R.curry(R.set(R.lensPath(lensPath), value))
       );
-      
+
       // a list of update functions, one for each param
       const updaterFuncs = R.map(updateParam, action.params);
 
