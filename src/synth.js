@@ -86,8 +86,7 @@ for (let i = 0; i < bufferSize; i++) {
 
 export const buildAudioNodes = (state) => {
 
-  const attack = 0.03;
-  const release = 2;
+  const { attack, release, toneCount, rootFrequency } = state.settings.synth;
   const { currentTime } = state.audioPlayer.audioGraph || 0;
   const targetGain = state.audioPlayer.isPlaying ? 0.2 : 0;
   const rampDuration = state.audioPlayer.isPlaying ? attack : release;
@@ -95,57 +94,30 @@ export const buildAudioNodes = (state) => {
   const stillRamping = currentTime < targetFinishTime;
   const curveType = stillRamping ? 'linearRampToValueAtTime' : 'setValueAtTime';
   targetFinishTime = stillRamping ? targetFinishTime : currentTime;
-
-  const rootFreq = 150;
   
-  const {curve1, curve2, curve3} = state.timbreParams;
+  const {
+    overtoneAmplitudesCurve, 
+    modulationMagnitudesCurve, 
+    modulationFrequenciesCurve
+  } = state.timbreParams;
 
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
-    toneCount: state.settings.toneCount,
-    overtoneAmp: i => sine(curve1, i),
-    overtoneModulationAmp: (i) => sine(curve2, i),
-    overtoneModulationFreq: (i) => sine(curve3, i) * 20,
+    toneCount: state.settings.synth.toneCount,
+    overtoneAmp: i => sine(overtoneAmplitudesCurve, i),
+    overtoneModulationAmp: (i) => sine(modulationMagnitudesCurve, i),
+    overtoneModulationFreq: (i) => 1 + sine(modulationFrequenciesCurve, i) * 12,
   })
   return {
 
     0: gain('output', {
         gain: [ curveType, targetGain, targetFinishTime ]
-      // gain: [ 
-      //   ['setValueAtTime', 0, currentTime],
-      //   ['linearRampToValueAtTime', 0.2, currentTime + attack],
-      //   ['linearRampToValueAtTime', 0, currentTime + attack + release],
-      // ]
     }),
 
-    1: genCustom(rootFreq * 1),   // 1
-    2: genCustom(rootFreq * 16 / 3),   // 3
-    3: genCustom(rootFreq * 12 / 5),  // 27/10
-    4: genCustom(rootFreq * 9 / 5)    // 2
-
-    // 1: biquadFilter(0, {
-    //   type: 'lowpass',
-    //   frequency: curve1.offset * 1000,
-    //   q: 10000000000000,
-    // }),
-
-    // 2: biquadFilter(1, {
-    //   type: 'highpass',
-    //   frequency: curve1.phase * 1000,
-    //   q: 1000000000000,
-    // }),
-
-    // 3: bufferSource(2, {
-    //   buffer: buffer,
-    //   loop: true
-    // })
-
-    // 1: oscWithFluctuatingGain(0, {
-    //   frequency: rootFreq,
-    //   gain: 0.6,
-    //   pulseAmplitiude: 0.6,
-    //   pulseFrequency: 2
-    // })
+    1: genCustom(rootFrequency * 1),   // 1
+    2: genCustom(rootFrequency * 16 / 3),   // 3
+    3: genCustom(rootFrequency * 12 / 5),  // 27/10
+    4: genCustom(rootFrequency * 9 / 5)    // 2
   };
 };
 

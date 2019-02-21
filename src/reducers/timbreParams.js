@@ -7,7 +7,7 @@ import {range, mapBetweenRanges} from '../utils';
 
 
 export const settings = {
-  curve1: {
+  overtoneAmplitudesCurve: {
     ranges: {
       phase: range(0, 18),
       offset: range(0, 1),
@@ -15,7 +15,7 @@ export const settings = {
       amp: range(0, 1)
     }
   },
-  curve2: {
+  modulationMagnitudesCurve: {
     ranges: {
       phase: range(0, 18),
       offset: range(0, 1),
@@ -23,7 +23,7 @@ export const settings = {
       amp: range(0, 1)
     }
   },
-  curve3: {
+  modulationFrequenciesCurve: {
     ranges: {
       phase: range(0, 18),
       offset: range(0, 1),
@@ -47,9 +47,9 @@ const genRandomCurve = (ranges) => {
 };
 
 export const initialState = {
-  curve1: genRandomCurve(settings.curve1.ranges),
-  curve2: genRandomCurve(settings.curve2.ranges),
-  curve3: genRandomCurve(settings.curve3.ranges),
+  overtoneAmplitudesCurve: genRandomCurve(settings.overtoneAmplitudesCurve.ranges),
+  modulationMagnitudesCurve: genRandomCurve(settings.modulationMagnitudesCurve.ranges),
+  modulationFrequenciesCurve: genRandomCurve(settings.modulationFrequenciesCurve.ranges),
   currentParamSetBeingAdjusted: null
 };
 
@@ -58,10 +58,12 @@ export const timbreParams = (state = initialState, action) => {
   // debugger;
   switch(action.type) {
     case 'BOX_ADJUSTMENT':
+
+      // overwrites the old value at lensPath with new value
       const updateParam = ({value, lensPath}) => (
-        // overwrite the old value at lensPath with new value
         R.curry(R.set(R.lensPath(lensPath), value))
       );
+      
       // a list of update functions, one for each param
       const updaterFuncs = R.map(updateParam, action.params);
 

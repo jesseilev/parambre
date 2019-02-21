@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { ReduxEmitter } from 'kuker-emitters';
-import { install } from 'redux-loop';
+import * as Loop from 'redux-loop';
 import * as R from 'ramda';
 
 
@@ -15,21 +15,16 @@ import createVirtualAudioGraph, {
   oscillator,
   stereoPanner,
 } from 'virtual-audio-graph';
+
 import audioContext from './audioContext';
-
 import updateGraph from './synth';
-import {fftUpdate} from './actions';
-
-
 import App from './components/App';
 import {rootReducer, initialState} from './reducers';
-
-// import {updateAudio, currentAudioGraph} from './reducers/audioGraphPlayer';
 
 
 const enhancer = compose(
   applyMiddleware(ReduxEmitter()),
-  install(),
+  Loop.install(),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
 

@@ -94,7 +94,7 @@ const AdjustableBoxFor4Params = (props) => {
     minHeight={60}
 
     style={{
-      border: '5px solid white',
+      border: '5px solid #ddd',
       background: boxBeingAdjusted === 'ME' ? 'rgba(0,0,0,0)' : props.color,
       opacity: boxBeingAdjusted === 'SOMEONE_ELSE' ? 0 : 1,
       display: 'flex',
@@ -120,10 +120,10 @@ const AdjustableBoxFor4Params = (props) => {
     }}
 
     resizeHandleStyles={{
-      topLeft: resizeHandleStyles('white'),
-      topRight: resizeHandleStyles('white'),
-      bottomLeft: resizeHandleStyles('white'),
-      bottomRight: resizeHandleStyles('white')
+      topLeft: resizeHandleStyles('#ddd'),
+      topRight: resizeHandleStyles('#ddd'),
+      bottomLeft: resizeHandleStyles('#ddd'),
+      bottomRight: resizeHandleStyles('#ddd')
     }}
 
     >

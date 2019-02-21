@@ -8,12 +8,20 @@ import createVirtualAudioGraph, {
 } from 'virtual-audio-graph';
 import { Cmd, loop } from 'redux-loop'; 
 import audioContext from '../audioContext';
-import {graphUpdate} from '../actions';
+import * as Actions from '../actions';
 
 
 const audioGraph = createVirtualAudioGraph({
   audioContext,
   output: audioContext.destination
+});
+
+// HACK
+// to make sure the first initial trigger fades in from volume 0.
+// Better would be dispatching a GRAPH_UPDATE Cmd when the app loads,
+// but doing so was causing audioGraph.currentTime to malfunction.
+audioGraph.update({
+  0: gain('output', { gain: 0 })
 });
 
 export const initialState = {
@@ -29,7 +37,10 @@ export const audioPlayer = (state = initialState, action) => {
       isPlaying: newIsPlaying,
       mostRecentPlayPauseChange: state.audioGraph.currentTime
     };
-    return loop(newState, Cmd.action(graphUpdate()));
+    return loop(
+      newState, 
+      Cmd.action(Actions.graphUpdate())
+    );
   };
 
   switch(action.type) {

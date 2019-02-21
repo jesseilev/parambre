@@ -25,55 +25,58 @@ const computeZIndex = (listOfParamsBoxes, paramsBox) => (
 );
 
 const ControlPad = (props) => {
-  const { curve1Params, curve2Params, curve3Params } = props;
-  const paramsList = [curve1Params, curve2Params, curve3Params];
+  const { 
+    overtoneAmplitudesBox, modulationMagnitudesBox, modulationFrequenciesBox 
+  } = props;
+  const paramsList = [
+    overtoneAmplitudesBox, modulationMagnitudesBox, modulationFrequenciesBox
+  ];
 
   return (
     <div
     style={{
-    width: '100%',
-    height: '100%',
-    borderColor: 'white',
-    borderStyle: 'dashed',
-    borderWidth: props.isAdjustmentHappening ? '0px' : '0px'
-    // background: 'rgba(255, 255, 255, 0.05)'
+      width: '100%',
+      height: '100%',
+      borderColor: 'white',
+      borderStyle: 'dashed',
+      borderWidth: props.isAdjustmentHappening ? '0px' : '0px'
+      // background: 'rgba(255, 255, 255, 0.05)'
     }}
     >
     
-
         <AdjustableBoxFor4Params 
         parentSize={props.size}
-        xParam={props.curve1Params.x}
-        yParam={props.curve1Params.y}
-        widthParam={props.curve1Params.width}
-        heightParam={props.curve1Params.height}
-        zIndex={computeZIndex(paramsList, curve1Params)}
-        color={'cyan'}
+        xParam={props.overtoneAmplitudesBox.x}
+        yParam={props.overtoneAmplitudesBox.y}
+        widthParam={props.overtoneAmplitudesBox.width}
+        heightParam={props.overtoneAmplitudesBox.height}
+        zIndex={computeZIndex(paramsList, overtoneAmplitudesBox)}
+        color={props.colors.overtoneAmplitudes}
         paramSetName={'overtoneAmplitudes'}
         >
         </AdjustableBoxFor4Params>
 
         <AdjustableBoxFor4Params 
         parentSize={props.size}
-        xParam={props.curve2Params.x}
-        yParam={props.curve2Params.y}
-        widthParam={props.curve2Params.width}
-        heightParam={props.curve2Params.height}
-        color={'magenta'}
+        xParam={props.modulationMagnitudesBox.x}
+        yParam={props.modulationMagnitudesBox.y}
+        widthParam={props.modulationMagnitudesBox.width}
+        heightParam={props.modulationMagnitudesBox.height}
+        color={props.colors.modulationMagnitudes}
         paramSetName={'modulationMagnitudes'}
-        zIndex={computeZIndex(paramsList, curve2Params)}
+        zIndex={computeZIndex(paramsList, modulationMagnitudesBox)}
         >
         </AdjustableBoxFor4Params>
 
         <AdjustableBoxFor4Params 
         parentSize={props.size}
-        xParam={props.curve3Params.x}
-        yParam={props.curve3Params.y}
-        widthParam={props.curve3Params.width}
-        heightParam={props.curve3Params.height}
-        color={'orange'}
+        xParam={props.modulationFrequenciesBox.x}
+        yParam={props.modulationFrequenciesBox.y}
+        widthParam={props.modulationFrequenciesBox.width}
+        heightParam={props.modulationFrequenciesBox.height}
+        color={props.colors.modulationFrequencies}
         paramSetName={'modulationFrequencies'}
-        zIndex={computeZIndex(paramsList, curve3Params)}
+        zIndex={computeZIndex(paramsList, modulationFrequenciesBox)}
         >
         </AdjustableBoxFor4Params>
     </div>
@@ -109,9 +112,22 @@ const mapStateToProps = (state) => {
   });
 
   return {
-    curve1Params: makeParams(state.timbreParams.curve1, settings.curve1, 'curve1'),
-    curve2Params: makeParams(state.timbreParams.curve2, settings.curve2, 'curve2'),
-    curve3Params: makeParams(state.timbreParams.curve3, settings.curve3, 'curve3'),
+    overtoneAmplitudesBox: makeParams(
+      state.timbreParams.overtoneAmplitudesCurve, 
+      settings.overtoneAmplitudesCurve, 
+      'overtoneAmplitudesCurve'
+    ),
+    modulationMagnitudesBox: makeParams(
+      state.timbreParams.modulationMagnitudesCurve, 
+      settings.modulationMagnitudesCurve, 
+      'modulationMagnitudesCurve'
+    ),
+    modulationFrequenciesBox: makeParams(
+      state.timbreParams.modulationFrequenciesCurve, 
+      settings.modulationFrequenciesCurve, 
+      'modulationFrequenciesCurve'
+    ),
+    colors: state.settings.colors,
     isAdjustmentHappening: state.timbreParams.currentParamSetBeingAdjusted !== null
   };
 };

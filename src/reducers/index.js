@@ -12,7 +12,18 @@ export const initialState = {
   frequencyData: FD.initialState,
   settings: {
     ...(TP.settings),
-    toneCount: 30
+    colors: {
+      overtoneAmplitudes: '#f50',
+      modulationMagnitudes: '#309',
+      modulationFrequencies: '#737'
+    },
+    synth: {
+      attack: 0.5,
+      release: 3,
+      toneCount: 30,
+      rootFrequency: 180,
+      chord: [ 1, 9/5, 12/5, 16/3 ]
+    }
   }
 };
 
