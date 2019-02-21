@@ -1,8 +1,9 @@
 {
-  "name": "todos",
+  "name": "Parambre",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "gh-pages": "^2.0.1",
     "react-scripts": "^2.0.2"
   },
   "dependencies": {
@@ -31,5 +32,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "homepage": "https://jesseilev.github.io/parambre"
 }
