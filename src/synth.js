@@ -25,14 +25,24 @@ import {sine} from './utils';
 const oscWithFluctuatingGain = createNode(({
   gain: gainValue,
   pulseFrequency,
-  pulseAmplitiude,
+  pulseAmplitiude, 
+  pan,
+  panPulseFrequency,
+  panPulseMagnitude,
   ...rest
 }) => {
+  // console.log(pan * 100);
+  console.log(panPulseMagnitude * 100);
   return {
-    0: gain('output', {gain: gainValue}),
+    10: stereoPanner('output', { pan: pan }),
+    
+    11: gain({ key: 10, destination: 'pan'}, { gain: panPulseMagnitude }),
+    12: oscillator(11, { frequency: panPulseFrequency, type: 'square' }),
+
+    0: gain(10, {gain: gainValue}),
     1: oscillator(0, { ...rest }),
     2: gain({ key: 0, destination: 'gain'}, { gain: pulseAmplitiude }),
-    3: oscillator(2, { frequency: pulseFrequency, type: 'saw' })
+    3: oscillator(2, { frequency: pulseFrequency, type: 'sine' })
   }
 })
 
@@ -46,12 +56,17 @@ const customSynth = createNode(({
 }) => {
   const reduceFunc = (accumulatedOscs, i) => {
     const freq = rootFrequency * i;
-    const amp = overtoneAmp(i, freq) / (i * toneCount);
+    const amp = overtoneAmp(i) / (i * toneCount);
     accumulatedOscs[i] = oscWithFluctuatingGain('output', { 
       frequency: freq, 
       gain: amp,
       pulseFrequency: overtoneModulationFreq(i),
       pulseAmplitiude: overtoneModulationAmp(i) * amp,
+
+      // for pan stuff, cheat and reuse each of the above functions with i shifted over
+      pan: overtoneAmp(i + 10) * 2 - 1,
+      panPulseFrequency: overtoneModulationFreq(i + 10),
+      panPulseMagnitude: overtoneModulationAmp(i + 10),
       ...rest
     });
     return accumulatedOscs;
@@ -95,7 +110,7 @@ export const buildAudioNodes = (state) => {
   const genCustom = freq => customSynth(0, {
     rootFrequency: freq,
     toneCount: state.settings.synth.toneCount,
-    overtoneAmp: i => sine(overtoneAmplitudesCurve, i),
+    overtoneAmp: (i) => sine(overtoneAmplitudesCurve, i),
     overtoneModulationAmp: (i) => sine(modulationMagnitudesCurve, i),
     overtoneModulationFreq: (i) => 1 + sine(modulationFrequenciesCurve, i) * 16,
   })

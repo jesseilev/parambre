@@ -20,9 +20,8 @@ export const initialState = {
     synth: {
       attack: 0.5,
       release: 3,
-      toneCount: 16,
-      rootFrequency: 180,
-      chord: [ 1, 9/5, 12/5, 16/3 ]
+      toneCount: 12,
+      rootFrequency: 150,
     }
   }
 };
