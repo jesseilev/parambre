@@ -31,8 +31,6 @@ const oscWithFluctuatingGain = createNode(({
   panPulseMagnitude,
   ...rest
 }) => {
-  // console.log(pan * 100);
-  console.log(panPulseMagnitude * 100);
   return {
     10: stereoPanner('output', { pan: pan }),
     
