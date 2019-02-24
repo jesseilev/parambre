@@ -25,13 +25,14 @@ export default (function() {
   // unlock if iOS
   const isLockedOnIosDevice = context.state === 'suspended' && 'ontouchstart' in window;
   if(isLockedOnIosDevice) {
-    alert('I know the device is iOS and audiocontext is locked');
+    // alert('I know the device is iOS and audiocontext is locked');
     const unlock = () => {
       context.resume();
-      alert('I have attempted to unlock the audiocontext');
+      // alert('I have attempted to unlock the audiocontext');
+      document.body.removeEventListener('touchstart', unlock);
     }
-    // document.body.addEventListener('touchstart', unlock, false);
-    unlock();
+    
+    document.body.addEventListener('touchstart', unlock, false);
   }
 
   return context;
