@@ -7,9 +7,9 @@ const tryAudioContext = () => {
     || false; 
 }
 
-const audioContext = tryAudioContext();
+const AudioContext = tryAudioContext();
 
-if (! audioContext) {
+if (! AudioContext) {
   alert("Sorry, but the Web Audio API is not supported by your browser." 
     + "Please, consider upgrading to the latest version or downloading "
     + "Google Chrome or Mozilla Firefox."
@@ -17,4 +17,4 @@ if (! audioContext) {
 }
 
 
-export default new audioContext();
+export default new AudioContext();
