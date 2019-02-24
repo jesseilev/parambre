@@ -30,7 +30,8 @@ export default (function() {
       context.resume();
       alert('I have attempted to unlock the audiocontext');
     }
-    document.body.addEventListener('touchstart', unlock, false);
+    // document.body.addEventListener('touchstart', unlock, false);
+    unlock();
   }
 
   return context;
