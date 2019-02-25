@@ -3,6 +3,8 @@
 
 https://jesseilev.github.io/parambre
 
+**Note:** As of this writing the app does not support mobile devices, or Safari.
+
 ### What is it?
 
 * A simple interface for manipulating the timbre of an ambient sound.
