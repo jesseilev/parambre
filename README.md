@@ -1,7 +1,7 @@
 # Parambre
 *Parameters + Timbre = Parambre*
 
-https://jesseilev.github.io/parambre
+[Check it out here](https://jesseilev.github.io/parambre)
 
 **Note:** The app does not currently support mobile devices, or Safari.
 
