@@ -7,9 +7,9 @@ https://jesseilev.github.io/parambre
 
 ### What is it?
 
-* A simple interface for manipulating the timbre of an ambient sound.
+* A simple interface for manipulating the [timbre](https://en.wikipedia.org/wiki/Timbre) an ambient sound.
 * Drag and resize 3 rectangles to manipulate 12 parameters of the sound.
-
+* Built with React, Redux and the Web Audio API
 
 ### Running it
 
